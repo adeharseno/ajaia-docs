@@ -1,7 +1,7 @@
 # Database Design
 
-Postgres (Vercel Postgres) via Prisma. `prisma db push` instead of formal
-migrations, to save time.
+Postgres (Neon, via the Vercel Marketplace) accessed through Prisma.
+`prisma db push` instead of formal migrations, to save time.
 
 ## Schema
 
@@ -47,3 +47,13 @@ model DocumentShare {
 ## Seed Data
 3 users (alice, bob, carol). Optionally one sample document from alice,
 already shared with bob, so the reviewer sees sharing working immediately.
+
+## Connecting to Neon
+Vercel's own Postgres product was discontinued in favor of Marketplace
+integrations (Neon being the direct successor — it's what Vercel Postgres
+ran on under the hood anyway). Installing Neon from the Marketplace
+auto-generates a `DATABASE_URL`, but not a `DIRECT_URL` — that one needs
+to be added manually, using the value from Neon's `DATABASE_URL_UNPOOLED`
+(same connection string, minus the pgbouncer pooler in the hostname).
+Prisma's `directUrl` field needs a non-pooled connection for `db push` /
+migrations to work reliably.

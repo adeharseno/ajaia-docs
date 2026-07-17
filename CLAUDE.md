@@ -3,7 +3,8 @@
 Context for AI assistance on this project. Read `docs/` before writing code.
 
 ## Stack
-Next.js (App Router) + TypeScript, Prisma + Vercel Postgres, Tiptap editor.
+Next.js (App Router) + TypeScript, Prisma + Postgres (Neon, via the
+Vercel Marketplace), Tiptap editor.
 Deploys to Vercel only, no paid services — reviewers must be able to use it
 for free with no setup.
 

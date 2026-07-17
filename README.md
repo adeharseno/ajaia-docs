@@ -13,8 +13,8 @@ the Ajaia take-home assignment. See `docs/prd.md` for full scope and
 - Dashboard separates "My Documents" from "Shared with Me"
 
 ## Stack
-Next.js (App Router, TypeScript) · Prisma · Postgres (Vercel Postgres) ·
-Tiptap · Tailwind CSS · Vitest
+Next.js (App Router, TypeScript) · Prisma · Postgres (Neon, via the
+Vercel Marketplace) · Tiptap · Tailwind CSS · Vitest
 
 ## Local Setup
 
@@ -33,8 +33,18 @@ Tiptap · Tailwind CSS · Vitest
    scope needs, so it stays on the 6.x config style (`url`/`directUrl`
    directly in the datasource block).
 
-2. Set up the database. Create a free Postgres database (e.g. via the
-   Vercel dashboard → Storage → Create Database → Postgres), then:
+2. Set up the database. Vercel no longer offers a native Postgres
+   product — create one through the Marketplace instead:
+   - In your Vercel project, go to Storage → Browse Marketplace → **Neon**
+     (or go directly to vercel.com/marketplace/neon), install it, and
+     connect it to this project. This auto-generates `DATABASE_URL` and
+     several other connection variables.
+   - Neon's integration doesn't name a variable `DIRECT_URL` by default —
+     add one manually in Vercel's Environment Variables using the value
+     from `DATABASE_URL_UNPOOLED` (same connection, just without the
+     pooler in the hostname). Prisma needs both `DATABASE_URL` (pooled)
+     and `DIRECT_URL` (direct) — see `prisma/schema.prisma`.
+   - Then locally:
    ```bash
    cp .env.example .env
    # fill in DATABASE_URL and DIRECT_URL in .env
@@ -69,11 +79,17 @@ Covers the document access-control logic (`lib/access.ts`) — who can view
 or edit a given document.
 
 ## Deployment
-Deployed to Vercel. Push this repo to GitHub, import it in Vercel, add a
-Vercel Postgres database from the Storage tab (this sets `DATABASE_URL` /
-`DIRECT_URL` automatically), then deploy. Run `npm run db:seed` once
-against the production database (e.g. via `vercel env pull` locally, then
-`npm run db:seed`) to create the demo users.
+Deployed to Vercel. Push this repo to GitHub, import it in Vercel, install
+the Neon integration from the Vercel Marketplace and connect it to this
+project (this sets `DATABASE_URL` and related variables automatically —
+add `DIRECT_URL` manually as described above), then deploy. Run
+`npm run db:push` and `npm run db:seed` once against the production
+database (e.g. via `vercel env pull` locally, then run both commands) to
+create the schema and demo users.
+
+If reviewers get a login page from Vercel instead of the app, check
+Settings → Deployment Protection — "Vercel Authentication" needs to be
+off for the URL to be publicly reachable.
 
 ## Known Limitations
 - Only `.txt` and `.md` files can be imported (max 1MB); `.md` content is

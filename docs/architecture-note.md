@@ -2,14 +2,23 @@
 
 ## Stack
 Next.js (App Router) for both frontend and API routes, Prisma + Postgres
-(Vercel Postgres) for storage, Tiptap for the rich text editor. One
-deployment target (Vercel), no separate backend service.
+(Neon, via the Vercel Marketplace) for storage, Tiptap for the rich text
+editor. One deployment target (Vercel), no separate backend service.
 
 ## Key decisions
 
 **API routes as the backend.** Everything lives in one Next.js app, deployed
 as a single Vercel project. Simpler to build and deploy in a 4-hour window
 than a separate backend.
+
+**Postgres over SQLite.** SQLite is a valid option for this assignment, but
+Vercel's serverless functions don't have a persistent filesystem — a
+locally-written SQLite file isn't guaranteed to survive between requests,
+which breaks the "documents remain available after refresh" requirement.
+Went with Postgres (via Neon's Vercel Marketplace integration, since
+Vercel's own Postgres product was discontinued in favor of it) instead of
+SQLite-on-the-edge alternatives like Turso, mainly for familiarity with
+standard Prisma + Postgres.
 
 **Mock auth via cookie.** A cookie stores the logged-in user's id, set after
 picking one of three seeded users — no passwords, no OAuth. This is a
