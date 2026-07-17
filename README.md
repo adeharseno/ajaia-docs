@@ -22,6 +22,16 @@ Tiptap · Tailwind CSS · Vitest
    ```bash
    npm install
    ```
+   This runs `prisma generate` automatically. It needs internet access to
+   download Prisma's engine binaries — if `npm install` fails on that step
+   behind a restrictive network/proxy, run `npx prisma generate` again once
+   connectivity is available.
+
+   Note: this project pins `prisma`/`@prisma/client` to `6.19.3`. Prisma 7
+   moved database connection config out of `schema.prisma` into a separate
+   `prisma.config.ts` + driver adapter — more setup than this project's
+   scope needs, so it stays on the 6.x config style (`url`/`directUrl`
+   directly in the datasource block).
 
 2. Set up the database. Create a free Postgres database (e.g. via the
    Vercel dashboard → Storage → Create Database → Postgres), then:
