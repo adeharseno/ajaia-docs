@@ -1,7 +1,6 @@
 # Ajaia Docs
 
-A lightweight, Google Docs–style collaborative document editor. Built for
-the Ajaia take-home assignment. See `docs/prd.md` for full scope and
+A lightweight, Google Docs–style collaborative document editor. See `docs/prd.md` for full scope and
 `docs/architecture-note.md` for design decisions and trade-offs.
 
 ## Features
